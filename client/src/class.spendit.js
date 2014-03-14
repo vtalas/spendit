@@ -7,9 +7,9 @@ var Spendit = (function () {
 		this.budget = data.budget;
 		this.endDate = moment(data.endDate);
 		this.daysToEnd = this.endDate.diff(this.today, "days");
-		this.expenses = data.expenses || [];
+		this.expenses = new ExpenseList(data.expenses);
 
-		this.dayBudget = this.budget / this.daysToEnd;
+		this.dailyBudget = this.budget / this.daysToEnd;
 	}
 
 	Spendit.prototype.xxx = function () {
