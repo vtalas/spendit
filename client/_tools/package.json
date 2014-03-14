@@ -1,0 +1,12 @@
+{
+	"name": "application-builder",
+	"version": "0.0.1",
+	"private": true,
+	"dependencies": {
+		"gulp": "",
+		"gulp-uglify": "",
+		"gulp-concat": "",
+		"gulp-minify-css": "",
+		"gulp-less": ""
+	}
+}
