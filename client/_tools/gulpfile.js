@@ -9,12 +9,14 @@ var gulp = require("gulp"),
 	uglify = require('gulp-uglify'),
 	minifyCSS = require('gulp-minify-css'),
 	concat = require("gulp-concat"),
+	karma = require('gulp-karma'),
 	isMin;
 
 function getLibs() {
 	var min = isMin ? ".min" : "";
 	return [
-		'../libs/angular/angular' + min + '.js'
+		'../libs/angular/angular' + min + '.js',
+		'../libs/moment/moment-with-langs.min.js'
 //		'../libs/js/angular-route' + min + '.js',
 //		'../libs/js/angular-animate' + min + '.js',
 //		'../libs/js/angular-resource' + min + '.js',
@@ -28,13 +30,14 @@ function getLibs() {
 var paths = {
 	scripts: [
 		'../common/*.js',
+		'../src/*.js',
 	],
 	jsLibs: getLibs(),
 	cssLibs: [
 		"../libs/960/fluid_grid.css"
 	],
 	less: [
-		'../Css/*.less'
+		'../css/*.less'
 	]
 };
 
@@ -44,7 +47,6 @@ gulp.task("scripts", function () {
 	if (isMin) {
 		src = src.pipe(uglify());
 	}
-
 	src
 		.pipe(concat("app.js"))
 		.pipe(gulp.dest("../build"));
@@ -81,6 +83,7 @@ gulp.task("less", function () {
 gulp.task('watch', function () {
 	gulp.watch(paths.scripts, ['scripts']);
 	gulp.watch(paths.less, ['less']);
+	gulp.watch(paths.cssLibs, ['css-libs']);
 });
 
 gulp.task('setup-min', function () {

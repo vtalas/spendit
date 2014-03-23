@@ -1,0 +1,9 @@
+.expenses {
+  list-style: none;
+  padding: 0;
+  border: 2px solid #ff0000;
+}
+.expenses li {
+  margin: 0px;
+  padding: 0;
+}
