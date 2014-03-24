@@ -34,7 +34,8 @@ var ExpenseList = (function () {
 
 	ExpenseList.prototype.sort = function (order) {
 		order = order || 1;
-		return this.list.sort(function (a, b) {
+		var sorted = this.list.slice(0);
+		return sorted.sort(function (a, b) {
 			return a.date < b.date ? -order : order;
 		});
 	};
@@ -53,7 +54,32 @@ var ExpenseList = (function () {
 		return this.sortType === sortType.DESC  ? last : this.list[0];
 	};
 
-	ExpenseList.prototype.sumByDays = function () {
+	ExpenseList.prototype.sumByDaysExtra = function (from, to) {
+		var list,
+			result = [],
+			current,
+			value = 0,
+			totalDays = to.diff(from, "days");
+
+		var delta = this.sortType,
+			startDate =  delta > 0 ? from : to;
+
+		list = this.sumByDays(to);
+		current = list.splice(0, 1)[0];
+		for (var i = 0; i <= totalDays; i++) {
+			value = 0;
+//			console.log("xx", startDate.format(), current.date.format());
+			if (current && current.date.diff(startDate, "days") === 0) {
+				value = current.value;
+				current = list.splice(0, 1)[0];
+			}
+			result.push({date: startDate.clone(), value: value});
+			startDate = startDate.add("days", delta);
+		}
+		return result;
+	};
+
+	ExpenseList.prototype.sumByDays = function (until) {
 		var result = [],
 			sum = 0,
 			item,
@@ -67,6 +93,11 @@ var ExpenseList = (function () {
 		currentDate = this.list[0].date;
 		for (i = 0; i < this.list.length; i++) {
 			item = this.list[i];
+//			if (until && until.diff(currentDate, "days") >= 0) {
+//				console.log("xaaax", until.format(), item.date.format(), currentDate.format());
+//				break;
+//			}
+
 			if (item.date.diff(currentDate, "days") === 0) {
 				sum += item.value;
 			} else {
@@ -155,7 +186,6 @@ var Spendit = (function () {
 		var xxx = days.splice(0,1);
 		for (var i = 0; i < daysTotal; i++) {
 			expense = new Expense({date:date, value: 0});
-			console.log(xxx.value, date.diff(xxx.date, "days"));
 			if (date.diff(xxx.date, "days") === 0) {
 				expense = xxx;
 				xxx = days.splice(0,1);
@@ -189,12 +219,12 @@ var spendit = function ($scope) {
 	$scope.newExpense = null;
 
 	$scope.a = new Spendit(mock);
-	$scope.list = $scope.a.getExpensesByDay();
+	$scope.list = $scope.a.expenses.sumByDaysExtra(moment("2014/3/10"), endDate);
 
 
 	$scope.addExpense = function () {
 		$scope.a.addExpense($scope.newExpense, moment());
-		$scope.list = $scope.a.getExpensesByDay();
+//		$scope.list = $scope.a.getExpensesByDay();
 	};
 };
 

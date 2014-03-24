@@ -15,12 +15,12 @@ var spendit = function ($scope) {
 	$scope.newExpense = null;
 
 	$scope.a = new Spendit(mock);
-	$scope.list = $scope.a.getExpensesByDay();
+	$scope.list = $scope.a.expenses.sumByDaysExtra(moment("2014/3/10"), endDate);
 
 
 	$scope.addExpense = function () {
 		$scope.a.addExpense($scope.newExpense, moment());
-		$scope.list = $scope.a.getExpensesByDay();
+//		$scope.list = $scope.a.getExpensesByDay();
 	};
 };
 

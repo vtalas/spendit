@@ -20,7 +20,7 @@ describe("Describe", function () {
 		expect(x.availableBudget()).toBe(8000 - x.totalSpent());
 	});
 
-	it("sum by days should show all days sums", function () {
+	xit("sum by days should show all days sums", function () {
 		var x = new Spendit(model, today),
 			sumByDays = x.getExpensesByDay();
 

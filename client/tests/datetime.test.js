@@ -10,10 +10,11 @@ describe("Describe", function () {
 				list = new ExpenseList(data);
 			
 			expect(list.getOldest().value).toBe(1);
-		});it("get oldest with DESC", function () {
+		});
+
+		it("get oldest with DESC", function () {
 			var data = [],
 				list = new ExpenseList(data);
-
 			expect(list.getOldest()).toBeNull();
 		});
 	});
@@ -73,6 +74,28 @@ describe("Describe", function () {
 			var list = new ExpenseList([]),
 				sumByDay = list.sumByDays();
 			expect(sumByDay.length).toBe(0);
+		});
+
+		it("sum by days including days without expenses", function () {
+			var data = [
+					{value: 30, date: "2014/3/2"},
+					{value: 30, date: "2014/3/2"},
+					{value: 1, date: "2014/3/1"},
+					{value: 1, date: "2014/3/1"},
+					{value: 1, date: "2014/3/21"},
+					{value: 33, date: "2014/3/20"},
+				],
+				list = new ExpenseList(data),
+				sumByDay;
+
+			sumByDay = list.sumByDaysExtra(moment("2014/3/1"), moment("2014/3/25"));
+			for (var i = 0; i < sumByDay.length; i++) {
+				var obj = sumByDay[i];
+				//console.log(obj.value);
+			}
+			expect(sumByDay.length).toBe(25);
+			console.log(JSON.stringify(sumByDay));
+			console.log(JSON.stringify(list.sumByDays()));
 		});
 
 		it("order asc", function () {

@@ -44,7 +44,6 @@ var Spendit = (function () {
 		var xxx = days.splice(0,1);
 		for (var i = 0; i < daysTotal; i++) {
 			expense = new Expense({date:date, value: 0});
-			console.log(xxx.value, date.diff(xxx.date, "days"));
 			if (date.diff(xxx.date, "days") === 0) {
 				expense = xxx;
 				xxx = days.splice(0,1);
