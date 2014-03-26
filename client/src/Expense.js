@@ -56,19 +56,21 @@ var ExpenseList = (function () {
 
 	ExpenseList.prototype.sumByDaysExtra = function (from, to) {
 		var list,
+			i,
 			result = [],
 			current,
 			value = 0,
 			totalDays = to.diff(from, "days");
 
 		var delta = this.sortType,
-			startDate =  delta > 0 ? from : to;
+			startDate =  delta > 0 ? from.clone() : to.clone();
 
-		list = this.sumByDays(to);
+
+		list = this.sumByDays();
 		current = list.splice(0, 1)[0];
-		for (var i = 0; i <= totalDays; i++) {
+		for (i = 0; i <= totalDays; i++) {
 			value = 0;
-//			console.log("xx", startDate.format(), current.date.format());
+			//console.log("xx", startDate.format());
 			if (current && current.date.diff(startDate, "days") === 0) {
 				value = current.value;
 				current = list.splice(0, 1)[0];
@@ -79,7 +81,7 @@ var ExpenseList = (function () {
 		return result;
 	};
 
-	ExpenseList.prototype.sumByDays = function (until) {
+	ExpenseList.prototype.sumByDays = function () {
 		var result = [],
 			sum = 0,
 			item,

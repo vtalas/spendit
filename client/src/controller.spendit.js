@@ -12,15 +12,20 @@ var spendit = function ($scope) {
 			{value: 100, date: moment().subtract("days",8)}
 		]
 	};
+
 	$scope.newExpense = null;
 
-	$scope.a = new Spendit(mock);
-	$scope.list = $scope.a.expenses.sumByDaysExtra(moment("2014/3/10"), endDate);
+	function getExpenses() {
+		$scope.list = $scope.a.expenses.sumByDaysExtra(moment("2014/3/10"), endDate);
+	}
 
+	$scope.a = new Spendit(mock);
+
+	getExpenses();
 
 	$scope.addExpense = function () {
 		$scope.a.addExpense($scope.newExpense, moment());
-//		$scope.list = $scope.a.getExpensesByDay();
+		getExpenses();
 	};
 };
 
