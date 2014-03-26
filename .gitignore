@@ -2,3 +2,5 @@
 client/_tools/node_modules/**
 node_modules/express/node_modules/**
 node_modules/**
+client/node_modules/**
+client/.idea/**
