@@ -94,8 +94,6 @@ describe("Describe", function () {
 				//console.log(obj.value);
 			}
 			expect(sumByDay.length).toBe(25);
-			console.log(JSON.stringify(sumByDay));
-			console.log(JSON.stringify(list.sumByDays()));
 		});
 
 		it("order asc", function () {
@@ -103,6 +101,7 @@ describe("Describe", function () {
 			expect(list.sort()[0].value).toBe(1);
 			expect(list.sort()[4].value).toBe(5);
 		});
+
 		it("order desc", function () {
 			var list = new ExpenseList(model.expenses);
 			expect(list.sort(-1)[0].value).toBe(5);
