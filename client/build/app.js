@@ -51,7 +51,7 @@ var ExpenseList = (function () {
 		if (this.list.length === 0) {
 			return null;
 		}
-		return this.sortType === sortType.DESC  ? last : this.list[0];
+		return this.sortType === sortType.DESC ? last : this.list[0];
 	};
 
 	ExpenseList.prototype.sumByDaysExtra = function (from, to) {
@@ -63,7 +63,7 @@ var ExpenseList = (function () {
 			totalDays = to.diff(from, "days");
 
 		var delta = this.sortType,
-			startDate =  delta > 0 ? from.clone() : to.clone();
+			startDate = delta > 0 ? from.clone() : to.clone();
 
 
 		list = this.sumByDays();
@@ -183,14 +183,14 @@ var Spendit = (function () {
 			days = this.expenses.sumByDays();
 
 		if (oldest !== null) {
-			daysTotal = date.diff(oldest.date,"days");
+			daysTotal = date.diff(oldest.date, "days");
 		}
-		var xxx = days.splice(0,1);
+		var xxx = days.splice(0, 1);
 		for (var i = 0; i < daysTotal; i++) {
-			expense = new Expense({date:date, value: 0});
+			expense = new Expense({date: date, value: 0});
 			if (date.diff(xxx.date, "days") === 0) {
 				expense = xxx;
-				xxx = days.splice(0,1);
+				xxx = days.splice(0, 1);
 			}
 
 			x.push(expense);
@@ -212,10 +212,10 @@ var spendit = function ($scope) {
 		expenses: [
 			{value: 1000, date: moment()},
 			{value: 1000, date: moment()},
-			{value: 1000, date: moment().subtract("days",2)},
-			{value: 1000, date: moment().subtract("days",2)},
-			{value: 10, date: moment().subtract("days",6)},
-			{value: 100, date: moment().subtract("days",8)}
+			{value: 1000, date: moment().subtract("days", 2)},
+			{value: 1000, date: moment().subtract("days", 2)},
+			{value: 10, date: moment().subtract("days", 6)},
+			{value: 100, date: moment().subtract("days", 8)}
 		]
 	};
 
