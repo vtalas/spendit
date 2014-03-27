@@ -6,10 +6,10 @@ var spendit = function ($scope) {
 		expenses: [
 			{value: 1000, date: moment()},
 			{value: 1000, date: moment()},
-			{value: 1000, date: moment().subtract("days",2)},
-			{value: 1000, date: moment().subtract("days",2)},
-			{value: 10, date: moment().subtract("days",6)},
-			{value: 100, date: moment().subtract("days",8)}
+			{value: 1000, date: moment().subtract("days", 2)},
+			{value: 1000, date: moment().subtract("days", 2)},
+			{value: 10, date: moment().subtract("days", 6)},
+			{value: 100, date: moment().subtract("days", 8)}
 		]
 	};
 

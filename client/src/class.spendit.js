@@ -39,14 +39,14 @@ var Spendit = (function () {
 			days = this.expenses.sumByDays();
 
 		if (oldest !== null) {
-			daysTotal = date.diff(oldest.date,"days");
+			daysTotal = date.diff(oldest.date, "days");
 		}
-		var xxx = days.splice(0,1);
+		var xxx = days.splice(0, 1);
 		for (var i = 0; i < daysTotal; i++) {
-			expense = new Expense({date:date, value: 0});
+			expense = new Expense({date: date, value: 0});
 			if (date.diff(xxx.date, "days") === 0) {
 				expense = xxx;
-				xxx = days.splice(0,1);
+				xxx = days.splice(0, 1);
 			}
 
 			x.push(expense);

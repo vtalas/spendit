@@ -24,11 +24,7 @@ describe("Describe", function () {
 		var x = new Spendit(model, today),
 			sumByDays = x.getExpensesByDay();
 
-		console.log(JSON.stringify(moment().add("d", -1)));
-
-		console.log(sumByDays.length);
 		expect(sumByDays.length).toBe(endDate.diff(oldestExpnese, "days"));
-
 	});
 
 });

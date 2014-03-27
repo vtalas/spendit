@@ -76,24 +76,61 @@ describe("Describe", function () {
 			expect(sumByDay.length).toBe(0);
 		});
 
-		it("sum by days including days without expenses", function () {
+		function printExpenses(expenses) {
+			var i;
+
+			for (i = 0; i < expenses.length; i++) {
+				var obj = expenses[i];
+				console.log(obj.value, obj.date.format());
+			}
+		}
+
+		function checkExpense(expense, expectedValue, expectedDate) {
+			var x = moment(expectedDate);
+
+			expect(expense.value).toBe(expectedValue);
+			expect(expense.date.diff(x, "days")).toBe(0);
+
+		}
+
+		it("sum by days including days without expenses, expenses are INSIDE interval from-to", function () {
 			var data = [
 					{value: 30, date: "2014/3/2"},
 					{value: 30, date: "2014/3/2"},
 					{value: 1, date: "2014/3/1"},
 					{value: 1, date: "2014/3/1"},
 					{value: 1, date: "2014/3/21"},
-					{value: 33, date: "2014/3/20"},
+					{value: 33, date: "2014/3/20"}
 				],
 				list = new ExpenseList(data),
 				sumByDay;
 
-			sumByDay = list.sumByDaysExtra(moment("2014/3/1"), moment("2014/3/25"));
-			for (var i = 0; i < sumByDay.length; i++) {
-				var obj = sumByDay[i];
-				//console.log(obj.value);
-			}
-			expect(sumByDay.length).toBe(25);
+			sumByDay = list.sumByDaysExtra(moment("2014/3/1"), moment("2014/3/22"));
+
+			checkExpense(sumByDay[0], 0, "2014/3/22");
+			checkExpense(sumByDay[1], 1, "2014/3/21");
+			checkExpense(sumByDay[21], 2, "2014/3/1");
+
+			expect(sumByDay.length).toBe(22);
+		});
+
+		it("sum by days including days without expenses, expenses are NOT INSIDE from-to", function () {
+			var data = [
+					{value: 1, date: "2014/3/20"},
+					{value: 22, date: "2014/3/22"},
+					{value: 33, date: "2014/3/25"}
+				],
+				list = new ExpenseList(data),
+				sumByDay;
+
+			sumByDay = list.sumByDaysExtra(moment("2014/3/21"), moment("2014/3/23"));
+			printExpenses(sumByDay);
+
+			checkExpense(sumByDay[0], 0, "2014/3/23");
+			checkExpense(sumByDay[1], 22, "2014/3/22");
+			checkExpense(sumByDay[2], 0, "2014/3/21");
+
+			expect(sumByDay.length).toBe(3);
 		});
 
 		it("order asc", function () {

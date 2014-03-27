@@ -51,7 +51,7 @@ var ExpenseList = (function () {
 		if (this.list.length === 0) {
 			return null;
 		}
-		return this.sortType === sortType.DESC  ? last : this.list[0];
+		return this.sortType === sortType.DESC ? last : this.list[0];
 	};
 
 	ExpenseList.prototype.sumByDaysExtra = function (from, to) {
@@ -63,7 +63,7 @@ var ExpenseList = (function () {
 			totalDays = to.diff(from, "days");
 
 		var delta = this.sortType,
-			startDate =  delta > 0 ? from.clone() : to.clone();
+			startDate = delta > 0 ? from.clone() : to.clone();
 
 
 		list = this.sumByDays();
