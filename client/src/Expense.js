@@ -66,7 +66,7 @@ var ExpenseList = (function () {
 			startDate = delta > 0 ? from.clone() : to.clone();
 
 
-		list = this.sumByDays();
+		list = this.sumByDays(from, to);
 		current = list.splice(0, 1)[0];
 		for (i = 0; i <= totalDays; i++) {
 			value = 0;
@@ -81,7 +81,7 @@ var ExpenseList = (function () {
 		return result;
 	};
 
-	ExpenseList.prototype.sumByDays = function () {
+	ExpenseList.prototype.sumByDays = function (from, to) {
 		var result = [],
 			sum = 0,
 			item,
@@ -95,20 +95,27 @@ var ExpenseList = (function () {
 		currentDate = this.list[0].date;
 		for (i = 0; i < this.list.length; i++) {
 			item = this.list[i];
-//			if (until && until.diff(currentDate, "days") >= 0) {
-//				console.log("xaaax", until.format(), item.date.format(), currentDate.format());
-//				break;
-//			}
 
-			if (item.date.diff(currentDate, "days") === 0) {
-				sum += item.value;
-			} else {
-				result.push({value: sum, date: currentDate});
-				sum = item.value;
+			currentDate = item.date;
+
+			//console.log(from.format(), to.format(), currentDate.format())
+			if (from && to && item.date.diff(from, "days") >= 0 && item.date.diff(to, "days") <= 0) {
+				console.log(item.date.diff(from, "days"), item.date.diff(to, "days") ,item.date.format(), from.format(), to.format());
+
+
+				if (item.date.diff(currentDate, "days") === 0) {
+					sum += item.value;
+				} else {
+					result.push({value: sum, date: currentDate});
+				}
 				currentDate = item.date;
 			}
+
+
 		}
-		result.push({value: sum, date: currentDate});
+		if (from && to && currentDate.diff(from, "days") > 0 && currentDate.diff(to, "days") < 0) {
+		//	result.push({value: sum, date: currentDate});
+		}
 
 		return result;
 	};
