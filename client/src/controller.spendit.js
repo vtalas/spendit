@@ -16,7 +16,8 @@ var spendit = function ($scope) {
 	$scope.newExpense = null;
 
 	function getExpenses() {
-		$scope.list = $scope.a.expenses.sumByDaysExtra(moment("2014/3/10"), endDate);
+		var end = moment();
+		$scope.list = $scope.a.expenses.dailyExpenses(moment("2014/3/10"), end);
 		console.log($scope.list, $scope.a.expenses.list);
 	}
 
@@ -26,6 +27,7 @@ var spendit = function ($scope) {
 
 	$scope.addExpense = function () {
 		$scope.a.addExpense($scope.newExpense, moment());
+		$scope.newExpense = null;
 		getExpenses();
 	};
 };
