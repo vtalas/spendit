@@ -1,10 +1,17 @@
 /*global moment*/
 var Expense = (function () {
-	"use strict"
+	"use strict";
 
 	function Expense(data) {
 		data = data || {};
-		this.date = moment(data.date);
+
+		if (data.date && data.date._isAMomentObject) {
+			this.date = data.date;
+		}
+		if (typeof data.date === "string") {
+			this.date = moment(data.date);
+		}
+		this.dateFromated = this.date.format();
 		this.value = data.value;
 	}
 
@@ -12,7 +19,7 @@ var Expense = (function () {
 }());
 
 var ExpenseList = (function () {
-	"use strict"
+	"use strict";
 
 	var sortType = {
 		DESC: -1,
@@ -42,7 +49,7 @@ var ExpenseList = (function () {
 
 	ExpenseList.prototype.add = function (expense) {
 		this.list.push(expense);
-		this.list = this.sort(-1);
+		this.list = this.sort(this.sortType);
 	};
 
 	ExpenseList.prototype.getOldest = function () {
@@ -60,17 +67,20 @@ var ExpenseList = (function () {
 			result = [],
 			current,
 			value = 0,
-			totalDays = to.diff(from, "days");
+			delta,
+			startDate,
+			totalDays;
 
-		var delta = this.sortType,
-			startDate = delta > 0 ? from.clone() : to.clone();
+		totalDays = to.diff(from, "days");
+
+		delta = this.sortType;
+		startDate = delta > 0 ? from.clone() : to.clone();
 
 
-		list = this.sumByDays();
+		list = this.sumByDays(from, to);
 		current = list.splice(0, 1)[0];
 		for (i = 0; i <= totalDays; i++) {
 			value = 0;
-			//console.log("xx", startDate.format());
 			if (current && current.date.diff(startDate, "days") === 0) {
 				value = current.value;
 				current = list.splice(0, 1)[0];
@@ -81,36 +91,53 @@ var ExpenseList = (function () {
 		return result;
 	};
 
-	ExpenseList.prototype.sumByDays = function () {
-		var result = [],
-			sum = 0,
-			item,
-			currentDate,
-			i;
+	ExpenseList.prototype.sumByDays = function (from, to) {
+		var sum = 0,
+			current = {},
+			last,
+			temp = {},
+			toArray = function () {
+				var result = [],
+					item;
+
+				for (item in temp) {
+					if (temp.hasOwnProperty(item)) {
+						result.push(temp[item]);
+					}
+				}
+				return result;
+			},
+			isInInterval = function (item) {
+				if (from && to) {
+					return item.date.diff(from, "days") >= 0 && item.date.diff(to, "days") <= 0;
+				}
+				return true;
+			},
+			listClone;
 
 		if (this.list.length === 0) {
-			return result;
+			return [];
 		}
+		listClone = this.list.slice(0).reverse();
 
-		currentDate = this.list[0].date;
-		for (i = 0; i < this.list.length; i++) {
-			item = this.list[i];
-//			if (until && until.diff(currentDate, "days") >= 0) {
-//				console.log("xaaax", until.format(), item.date.format(), currentDate.format());
-//				break;
-//			}
+		while (current) {
+			current = listClone.pop();
 
-			if (item.date.diff(currentDate, "days") === 0) {
-				sum += item.value;
-			} else {
-				result.push({value: sum, date: currentDate});
-				sum = item.value;
-				currentDate = item.date;
+			if (!current) {
+				break;
 			}
+			if (isInInterval(current)) {
+				if (last && last.date.diff(current.date, "days") === 0) {
+					sum += current.value;
+				} else {
+					sum = current.value;
+				}
+				temp[current.date.format("DD/MM/YYYY")] = new Expense({value: sum, date: current.date});
+			}
+			last = current;
 		}
-		result.push({value: sum, date: currentDate});
 
-		return result;
+		return toArray(temp);
 	};
 
 	ExpenseList.prototype.sumAll = function () {
@@ -168,9 +195,11 @@ var Spendit = (function () {
 	};
 
 	Spendit.prototype.addExpense = function (value, moment) {
-		var expense = new Expense();
-		expense.value = new Number(value, 10);
-		expense.date = moment;
+		var expense = new Expense({
+			value: new Number(value, 10),
+			date: moment
+		});
+		console.log(expense);
 		this.expenses.add(expense);
 	};
 
@@ -223,6 +252,7 @@ var spendit = function ($scope) {
 
 	function getExpenses() {
 		$scope.list = $scope.a.expenses.sumByDaysExtra(moment("2014/3/10"), endDate);
+		console.log($scope.list, $scope.a.expenses.list);
 	}
 
 	$scope.a = new Spendit(mock);
