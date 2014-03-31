@@ -16,7 +16,8 @@ var spendit = function ($scope) {
 	$scope.newExpense = null;
 
 	function getExpenses() {
-		$scope.list = $scope.a.expenses.sumByDaysExtra(moment("2014/3/10"), endDate);
+		$scope.list = $scope.a.expenses.sumByDays(moment("2014/3/10"), endDate);
+		console.log($scope.list, $scope.a.expenses.list);
 	}
 
 	$scope.a = new Spendit(mock);

@@ -66,11 +66,11 @@ describe("Describe", function () {
 				sumByDay = list.sumByDays();
 			expect(sumByDay.length).toBe(2);
 
-			expect(sumByDay[0].value).toBe(90);
-			expect(sumByDay[1].value).toBe(3);
+			checkExpense(sumByDay[0], 90, "2014/3/2");
+			checkExpense(sumByDay[1], 3, "2014/3/1");
 		});
 
-		it("kajsbd ", function () {
+		it("sum by days with from - to ", function () {
 			var data = [
 					{value: 1, date: "2014/3/1"},
 					{value: 2, date: "2014/3/2"},
@@ -87,14 +87,51 @@ describe("Describe", function () {
 				list = new ExpenseList(data),
 				sumByDay = list.sumByDays(moment("2014/3/2"), moment("2014/3/4"));
 
-
-			printExpenses(sumByDay)
-return ;
 			expect(sumByDay.length).toBe(3);
 			checkExpense(sumByDay[0], 4, "2014/3/4");
-			checkExpense(sumByDay[1], 3, "2014/3/3");
+			checkExpense(sumByDay[1], 9, "2014/3/3");
 			checkExpense(sumByDay[2], 2, "2014/3/2");
 
+			list.add(new Expense({value: 3, date: "2014/3/3"}));
+			sumByDay = list.sumByDays(moment("2014/3/2"), moment("2014/3/4"));
+
+			expect(sumByDay.length).toBe(3);
+			checkExpense(sumByDay[0], 4, "2014/3/4");
+			checkExpense(sumByDay[1], 12, "2014/3/3");
+			checkExpense(sumByDay[2], 2, "2014/3/2");
+
+
+		});
+
+		it("sum by days with from - to ", function () {
+			var data = [
+					{value: 1, date: "2014/3/1"},
+					{value: 2, date: "2014/3/2"},
+
+					{value: 3, date: "2014/3/3"},
+					{value: 3, date: "2014/3/3"},
+					{value: 3, date: "2014/3/3"},
+
+					{value: 4, date: "2014/3/4"},
+					{value: 4, date: "2014/3/5"},
+					{value: 4, date: "2014/3/6"}
+				],
+
+				list = new ExpenseList(data),
+				sumByDay = list.sumByDays();
+
+			expect(sumByDay.length).toBe(6);
+//			checkExpense(sumByDay[0], 4, "2014/3/4");
+//			checkExpense(sumByDay[1], 9, "2014/3/3");
+//			checkExpense(sumByDay[2], 2, "2014/3/2");
+
+			list.add(new Expense({value: 3, date: "2014/3/3"}));
+			sumByDay = list.sumByDays();
+
+			expect(sumByDay.length).toBe(6);
+//			checkExpense(sumByDay[0], 4, "2014/3/4");
+//			checkExpense(sumByDay[1], 12, "2014/3/3");
+			checkExpense(sumByDay[3], 12, "2014/3/3");
 		});
 
 		it("sum by days", function () {
@@ -170,6 +207,13 @@ return ;
 			var list = new ExpenseList(model.expenses);
 			expect(list.sort(-1)[0].value).toBe(5);
 			expect(list.sort(-1)[4].value).toBe(1);
+		});
+	});
+
+	describe("Expense", function () {
+		it("Test 1", function () {
+			var x = new Expense({date: "2014/10/10"});
+			expect(x.date._isAMomentObject).toBeTruthy();
 		});
 	});
 });

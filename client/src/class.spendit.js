@@ -24,9 +24,11 @@ var Spendit = (function () {
 	};
 
 	Spendit.prototype.addExpense = function (value, moment) {
-		var expense = new Expense();
-		expense.value = new Number(value, 10);
-		expense.date = moment;
+		var expense = new Expense({
+			value: new Number(value, 10),
+			date: moment
+		});
+		console.log(expense);
 		this.expenses.add(expense);
 	};
 

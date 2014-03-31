@@ -42,7 +42,7 @@
 		<h1><input ng-model="newExpense"/></h1>
 	</form>
 	<ul class="expenses">
-		<li ng-repeat="expense in list">{{expense.date.format("DD/MM/YYYY")}}............{{expense.value}}
+		<li ng-repeat="expense in list">{{expense.date.format()}}............{{expense.value}}
 		</li>
 	</ul>
 </div>
