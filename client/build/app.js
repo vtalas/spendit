@@ -67,10 +67,14 @@ var ExpenseList = (function () {
 			result = [],
 			current,
 			value = 0,
-			totalDays = to.diff(from, "days");
+			delta,
+			startDate,
+			totalDays;
 
-		var delta = this.sortType,
-			startDate = delta > 0 ? from.clone() : to.clone();
+		totalDays = to.diff(from, "days");
+
+		delta = this.sortType;
+		startDate = delta > 0 ? from.clone() : to.clone();
 
 
 		list = this.sumByDays(from, to);
@@ -89,7 +93,7 @@ var ExpenseList = (function () {
 
 	ExpenseList.prototype.sumByDays = function (from, to) {
 		var sum = 0,
-			x = {},
+			current = {},
 			last,
 			temp = {},
 			toArray = function () {
@@ -105,7 +109,6 @@ var ExpenseList = (function () {
 			},
 			isInInterval = function (item) {
 				if (from && to) {
-					console.log(item.date.diff(from, "days"), item.date.diff(to, "days"));
 					return item.date.diff(from, "days") >= 0 && item.date.diff(to, "days") <= 0;
 				}
 				return true;
@@ -117,21 +120,21 @@ var ExpenseList = (function () {
 		}
 		listClone = this.list.slice(0).reverse();
 
-		while (x) {
-			x = listClone.pop();
+		while (current) {
+			current = listClone.pop();
 
-			if (!x) {
+			if (!current) {
 				break;
 			}
-			if (isInInterval(x)) {
-				if (last && last.date.diff(x.date, "days") === 0) {
-					sum += x.value;
+			if (isInInterval(current)) {
+				if (last && last.date.diff(current.date, "days") === 0) {
+					sum += current.value;
 				} else {
-					sum = x.value;
+					sum = current.value;
 				}
-				temp[x.date.format("DD/MM/YYYY")] = new Expense({value: sum, date: x.date});
+				temp[current.date.format("DD/MM/YYYY")] = new Expense({value: sum, date: current.date});
 			}
-			last = x;
+			last = current;
 		}
 
 		return toArray(temp);
@@ -248,7 +251,7 @@ var spendit = function ($scope) {
 	$scope.newExpense = null;
 
 	function getExpenses() {
-		$scope.list = $scope.a.expenses.sumByDays(moment("2014/3/10"), endDate);
+		$scope.list = $scope.a.expenses.sumByDaysExtra(moment("2014/3/10"), endDate);
 		console.log($scope.list, $scope.a.expenses.list);
 	}
 
