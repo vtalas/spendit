@@ -16,6 +16,7 @@ function getLibs() {
 	var min = isMin ? ".min" : "";
 	return [
 		'../libs/angular/angular' + min + '.js',
+		'../libs/angular/angular-resource' + min + '.js',
 		'../libs/moment/moment-with-langs.min.js'
 //		'../libs/js/angular-route' + min + '.js',
 //		'../libs/js/angular-animate' + min + '.js',
@@ -31,6 +32,7 @@ var paths = {
 	scripts: [
 		'../common/*.js',
 		'../src/*.js',
+		'../*.js'
 	],
 	jsLibs: getLibs(),
 	cssLibs: [

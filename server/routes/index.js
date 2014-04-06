@@ -3,6 +3,13 @@
  * GET home page.
  */
 
+var moment = require('moment');
+
 exports.index = function(req, res){
-	res.render('index', { title: 'Express' });
+	var x = {
+		aaa: "askjbsad",
+		tiime : moment()
+	};
+
+	res.json(x);
 };

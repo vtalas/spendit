@@ -291,7 +291,7 @@ var Spendit = (function () {
 	return Spendit;
 }());
 
-var spendit = function ($scope) {
+var spendit = function ($scope, $resource, api) {
 	var endDate = moment("2014/4/10");
 	var mock = {
 		budget: 8000,
@@ -311,7 +311,6 @@ var spendit = function ($scope) {
 	function getExpenses() {
 		var end = moment();
 		$scope.list = $scope.a.expenses.sumByDays(moment("2014/3/10"), end);
-		console.log($scope.list, $scope.a.expenses.list);
 	}
 
 	$scope.a = new Spendit(mock);
@@ -325,4 +324,17 @@ var spendit = function ($scope) {
 	};
 };
 
+
+
+/*global angular*/
+"use strict";
+
+angular.module('mySpend', ['ngResource'])
+	.factory('api', ['$resource', function ($resource) {
+		return $resource('/api',
+			{  },
+			{
+				index: { method: 'GET', isArray: false, params: {} }
+			});
+	}]);
 

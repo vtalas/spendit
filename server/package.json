@@ -10,6 +10,7 @@
 		"jade": "*",
 		"gulp": "",
 		"gulp-uglify": "",
-		"gulp-less": ""
+		"gulp-less": "",
+		"moment": ""
 	}
 }
