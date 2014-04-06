@@ -269,7 +269,7 @@ describe("Describe", function () {
 
 			detail = list.detail(moment("2014-03-31T22:00:13+02:00"));
 
-			expect(detail.length).toBe(30);
+			expect(detail.length).toBe(3);
 
 			expect(detail[0].value).toBe(21);
 			expect(detail[1].value).toBe(12);
@@ -278,7 +278,6 @@ describe("Describe", function () {
 		});
 
 	});
-
 
 	describe("Expense", function () {
 		it("Test 1", function () {

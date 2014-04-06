@@ -17,7 +17,7 @@ var spendit = function ($scope) {
 
 	function getExpenses() {
 		var end = moment();
-		$scope.list = $scope.a.expenses.dailyExpenses(moment("2014/3/10"), end);
+		$scope.list = $scope.a.expenses.sumByDays(moment("2014/3/10"), end);
 		console.log($scope.list, $scope.a.expenses.list);
 	}
 

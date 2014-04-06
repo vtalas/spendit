@@ -77,21 +77,23 @@ var ExpenseList = (function () {
 	};
 
 
-	ExpenseList.prototype.xx = function (date) {
+	ExpenseList.prototype.stripTime = function (date) {
+		return moment(date.toArray().splice(0,3));
+	};
 
+	ExpenseList.prototype.diffDays = function (source, diffTo) {
+		return this.stripTime(source).diff(this.stripTime(diffTo), "days");
 	};
 
 	ExpenseList.prototype.detail = function (date) {
-		var parsed = moment(date),
+		var parsed = this.stripTime(moment(date)),
 			result = [],
 			current,
 			i;
 
-		console.log(",,", date.format(),parsed.format());
 		for (i = 0; i < this.list.length; i++) {
-			current = moment(this.list[i].date, "YYYY/MM/DD");
-			//console.log(current.format());
-				if (current.diff(parsed, "days") === 0) {
+			current = this.list[i];
+			if (this.diffDays(current.date, parsed) === 0) {
 				result.push(current);
 			}
 		}
@@ -308,7 +310,7 @@ var spendit = function ($scope) {
 
 	function getExpenses() {
 		var end = moment();
-		$scope.list = $scope.a.expenses.dailyExpenses(moment("2014/3/10"), end);
+		$scope.list = $scope.a.expenses.sumByDays(moment("2014/3/10"), end);
 		console.log($scope.list, $scope.a.expenses.list);
 	}
 
