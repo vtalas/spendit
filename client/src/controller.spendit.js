@@ -1,17 +1,4 @@
 var spendit = function ($scope, $resource, api) {
-	var endDate = moment("2014/4/10");
-	var mock = {
-		budget: 8000,
-		endDate: endDate,
-		expenses: [
-			{value: 1000, date: moment()},
-			{value: 1000, date: moment()},
-			{value: 1000, date: moment().subtract("days", 2)},
-			{value: 1000, date: moment().subtract("days", 2)},
-			{value: 10, date: moment().subtract("days", 6)},
-			{value: 100, date: moment().subtract("days", 8)}
-		]
-	};
 
 	$scope.newExpense = null;
 
@@ -20,9 +7,12 @@ var spendit = function ($scope, $resource, api) {
 		$scope.list = $scope.a.expenses.sumByDays(moment("2014/3/10"), end);
 	}
 
-	$scope.a = new Spendit(mock);
+	api.index(function (data) {
+		console.log(data);
+		$scope.a = new Spendit(data);
+		getExpenses();
+	});
 
-	getExpenses();
 
 	$scope.addExpense = function () {
 		$scope.a.addExpense($scope.newExpense, moment());

@@ -27,6 +27,7 @@ if ('development' === app.get('env')) {
 	app.use(express.errorHandler());
 }
 
+app.get('/api/get/:id', routes.get);
 app.get('/api', routes.index);
 
 http.createServer(app).listen(app.get('port'), function () {
