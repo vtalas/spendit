@@ -1,3 +1,5 @@
+/*global Spendit, moment
+ */
 var spendit = function ($scope, $resource, api) {
 
 	$scope.newExpense = null;

@@ -12,14 +12,14 @@ var Expense = (function () {
 			this.date = moment(data.date);
 		}
 		this.dateFromated = this.date.format();
-		this.value = data.value;
+		this.value = Number(data.value, 10);
 	}
 
 	return Expense;
 }());
 
 
-/*global Moment, Expense*/
+/*global Moment, Expense, moment*/
 var ExpenseList = (function () {
 	"use strict";
 
@@ -61,6 +61,7 @@ var ExpenseList = (function () {
 	ExpenseList.prototype.add = function (expense) {
 		this.list.push(expense);
 		this.list = this.sort(this.sortType);
+		return this;
 	};
 
 	/**
@@ -85,6 +86,11 @@ var ExpenseList = (function () {
 		return this.stripTime(source).diff(this.stripTime(diffTo), "days");
 	};
 
+	/**
+	 *
+	 * @param date
+	 * @returns {Array}
+	 */
 	ExpenseList.prototype.detail = function (date) {
 		var parsed = this.stripTime(moment(date)),
 			result = [],
@@ -131,14 +137,14 @@ var ExpenseList = (function () {
 				value = current.value;
 				current = list.splice(0, 1)[0];
 			}
-			result.push({date: startDate.clone(), value: value});
+			result.push(new Expense({date: startDate.clone(), value: value}));
 			startDate = startDate.add("days", delta);
 		}
 		return result;
 	};
 
 	/**
-	 *
+	 *@public
 	 */
 	ExpenseList.prototype.sumByDays = function (from, to) {
 		var sum = 0,
@@ -257,7 +263,6 @@ var Spendit = (function () {
 			value: new Number(value, 10),
 			date: moment
 		});
-		console.log(expense);
 		this.expenses.add(expense);
 	};
 
@@ -291,6 +296,8 @@ var Spendit = (function () {
 	return Spendit;
 }());
 
+/*global Spendit, moment
+ */
 var spendit = function ($scope, $resource, api) {
 
 	$scope.newExpense = null;

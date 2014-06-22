@@ -2,7 +2,7 @@ var moment = require('moment');
 
 
 exports.index = function (req, res) {
-	var endDate = moment("2014/4/10"),
+	var endDate = moment("2014/7/10"),
 		mock = {
 			budget: 8000,
 			endDate: endDate,
@@ -24,3 +24,4 @@ exports.get = function (req, res) {
 	console.log("x", req.params);
 	res.json({"xx" :req.params});
 };
+

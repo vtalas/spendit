@@ -17,7 +17,9 @@ function getLibs() {
 	return [
 		'../libs/angular/angular' + min + '.js',
 		'../libs/angular/angular-resource' + min + '.js',
-		'../libs/moment/moment-with-langs.min.js'
+		'../libs/moment/moment-with-langs.min.js',
+		'../libs/react/react.js',
+		'../libs/react/JSXTransformer.js',
 //		'../libs/js/angular-route' + min + '.js',
 //		'../libs/js/angular-animate' + min + '.js',
 //		'../libs/js/angular-resource' + min + '.js',
@@ -33,6 +35,9 @@ var paths = {
 		'../common/*.js',
 		'../src/*.js',
 		'../*.js'
+	],
+	jsx: [
+		'../components/*.js'
 	],
 	jsLibs: getLibs(),
 	cssLibs: [
@@ -51,6 +56,16 @@ gulp.task("scripts", function () {
 	}
 	src
 		.pipe(concat("app.js"))
+		.pipe(gulp.dest("../build"));
+});
+
+gulp.task("jsx", function () {
+	var src = gulp.src(paths.jsx);
+	if (isMin) {
+		src = src.pipe(uglify());
+	}
+	src
+		.pipe(concat("components.js"))
 		.pipe(gulp.dest("../build"));
 });
 
@@ -85,6 +100,7 @@ gulp.task("less", function () {
 gulp.task('watch', function () {
 	gulp.watch(paths.scripts, ['scripts']);
 	gulp.watch(paths.less, ['less']);
+	gulp.watch(paths.jsx, ['jsx']);
 	gulp.watch(paths.cssLibs, ['css-libs']);
 });
 
@@ -94,7 +110,7 @@ gulp.task('setup-min', function () {
 });
 
 
-gulp.task('run', ['scripts', 'less', 'js-libs', "css-libs"]);
+gulp.task('run', ['scripts', 'less', 'js-libs', "css-libs", "jsx"]);
 gulp.task('min', ['setup-min', 'run']);
 gulp.task('default', ['run', 'watch']);
 

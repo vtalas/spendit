@@ -28,7 +28,6 @@ var Spendit = (function () {
 			value: new Number(value, 10),
 			date: moment
 		});
-		console.log(expense);
 		this.expenses.add(expense);
 	};
 

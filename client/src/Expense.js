@@ -12,7 +12,7 @@ var Expense = (function () {
 			this.date = moment(data.date);
 		}
 		this.dateFromated = this.date.format();
-		this.value = data.value;
+		this.value = Number(data.value, 10);
 	}
 
 	return Expense;

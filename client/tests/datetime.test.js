@@ -173,15 +173,15 @@ describe("Describe", function () {
 					{value: 33, date: "2014/3/20"}
 				],
 				list = new ExpenseList(data),
-				sumByDay;
+				daily;
 
-			sumByDay = list.dailyExpenses(moment("2014/3/1"), moment("2014/3/22"));
+			daily = list.dailyExpenses(moment("2014/3/1"), moment("2014/3/22"));
+//			printExpenses(daily)
+			checkExpense(daily[0], 0, "2014/3/22");
+			checkExpense(daily[1], 1, "2014/3/21");
+			checkExpense(daily[21], 2, "2014/3/1");
 
-			checkExpense(sumByDay[0], 0, "2014/3/22");
-			checkExpense(sumByDay[1], 1, "2014/3/21");
-			checkExpense(sumByDay[21], 2, "2014/3/1");
-
-			expect(sumByDay.length).toBe(22);
+			expect(daily.length).toBe(22);
 		});
 
 		it("sum by days including days without expenses, expenses are NOT INSIDE from-to", function () {
