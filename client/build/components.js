@@ -14,10 +14,7 @@ var expenseRender = React.createClass({
 		this.props.onDelete(this.props.expense);
 	},
 	detailClick: function () {
-		var expense = this.props.expense,
-			expenseList = this.props.expensesList;
-
-		this.setState({details: expenseList.detail(expense.date)});
+		this.setState({details: this.props.getDetails(this.props.expense)});
 	},
 	render: function () {
 		var rows = [],
@@ -85,6 +82,9 @@ var expen = React.createClass({
 	onChange: function (e) {
 		this.setState({value: e.target.value});
 	},
+	getDetails: function (expense) {
+		return this.state.expensesList.detail(expense.date);
+	},
 	onDeleteExpense: function (item) {
 		console.log("delete this one", item);
 	},
@@ -102,7 +102,7 @@ var expen = React.createClass({
 				ref="chuj"
 				onDelete={this.onDeleteExpense}
 				expense={expense}
-				expensesList={this.state.expensesList}
+				getDetails={this.getDetails}
 				>
 				</expenseRender>)
 		}
