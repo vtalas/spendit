@@ -89,7 +89,7 @@ var ExpenseList = (function () {
 	/**
 	 *
 	 * @param date
-	 * @returns {Array}
+	 * @returns {Array<Expense>}
 	 */
 	ExpenseList.prototype.detail = function (date) {
 		var parsed = this.stripTime(moment(date)),
@@ -100,7 +100,7 @@ var ExpenseList = (function () {
 		for (i = 0; i < this.list.length; i++) {
 			current = this.list[i];
 			if (this.diffDays(current.date, parsed) === 0) {
-				result.push(current);
+				result.push(new Expense({value: current.value, date: current.date}));
 			}
 		}
 

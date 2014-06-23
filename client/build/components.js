@@ -1,26 +1,44 @@
 /**
  * @jsx React.DOM
  */
-
-var helloWorld = React.createClass({
-	render: function () {
-		//return React.DOM.h2(null, 'Hello, world!  sd' + this.props.param);
-		return (<h1>hello {this.props.param}</h1>);
-	}
-});
-
-//React.renderComponent(prdel(), document.getElementById('hello'));
+/*global React*/
+"use strict";
 
 var expenseRender = React.createClass({
+	getInitialState: function () {
+		return {
+			details: []
+		};
+	},
 	buttonClick: function () {
 		this.props.onDelete(this.props.expense);
 	},
+	detailClick: function () {
+		var expense = this.props.expense,
+			expenseList = this.props.expensesList;
+
+		this.setState({details: expenseList.detail(expense.date)});
+	},
 	render: function () {
-		/** @type Expense */
-		var expense = this.props.expense;
-		return (<div>{expense.dateFromated}..{expense.value} <button onClick={this.buttonClick}>delete</button></div>);
+		var rows = [],
+			i,
+			expense = this.props.expense;
+
+		for (i = 0; i < this.state.details.length; i++) {
+			rows.push(<div>{this.state.details[i].value}</div>);
+		}
+
+		return (
+			<div>{expense.dateFromated}..{expense.value}
+				<button onClick={this.detailClick}>detail</button>
+				<button onClick={this.buttonClick}>delete</button>
+				<div>{rows}</div>
+			</div>
+			);
 	}
+
 });
+
 
 var expen = React.createClass({
 	getInitialState: function () {
@@ -38,8 +56,8 @@ var expen = React.createClass({
 			to: to
 		};
 	},
-	buttonClick: function () {
-		var exp = new Expense({value: this.state.value, date:moment()}),
+	addNewClick: function () {
+		var exp = new Expense({value: this.state.value, date: moment()}),
 			newitems = this.state.expensesList.add(exp);
 
 		this.setState({value: "", expensesList: newitems});
@@ -79,15 +97,21 @@ var expen = React.createClass({
 
 		for (var i = 0; i < serverData.length; i++) {
 			expense = serverData[i];
-			rows.push(<expenseRender ref="chuj" onDelete={this.onDeleteExpense} expense={expense}></expenseRender>)
+			rows.push(
+				<expenseRender
+				ref="chuj"
+				onDelete={this.onDeleteExpense}
+				expense={expense}
+				expensesList={this.state.expensesList}
+				>
+				</expenseRender>)
 		}
 		return (
 			<div>
 				<button onClick={this.dailyClick} >daily </button>
 				<button onClick={this.sumByDaysClick} >by days </button>
-				<button onClick={this.buttonClick} >click </button>
+				<button onClick={this.addNewClick} >click </button>
 				<input onChange={this.onChange} value={this.state.value}/>
-				<helloWorld param={"testssss"}/>
 				<div className="aa">{rows}</div>
 			</div>);
 	}
